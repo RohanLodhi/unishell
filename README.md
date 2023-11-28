@@ -1,2 +1,2 @@
 # unishell
-A platform independent UNIX shell.
+A platform independent UNIX shell written in C++.
