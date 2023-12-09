@@ -16,6 +16,7 @@
 
 #include "fileCommands.cpp"
 #include "echo.cpp"
+#include "man.cpp"
 
 using namespace std;
 
@@ -35,6 +36,7 @@ enum Command {
     WHOAMI,
     IFCONFIG,
     ECHO,
+    MAN,
     UNKNOWN
     //place commands here
 };
@@ -55,6 +57,8 @@ Command hashit(string const& inString) {
     if (inString == "whoami") return WHOAMI;
     if (inString == "ifconfig") return IFCONFIG;
     if (inString == "echo") return ECHO;
+    if (inString == "man") return MAN;
+
     return UNKNOWN;
 }
 
@@ -151,7 +155,31 @@ int main() {
             EchoCommand command = EchoCommand();
             command.execute(tokens);
             break;
-            //default unknown command rakha hai
+
+        case MAN:
+                // If there's a second word, display the manual for the second word
+                // Otherwise, display the manual for all commands
+                if (tokens.size() > 1) {
+                    MAN(tokens[1]);
+                } else {
+                    MAN("MAN");
+                }
+            std::string command;
+                std::cout << "Enter a command: ";
+                getline(std::cin, command);
+                command = toUpperCase(command);
+
+                // Spliting the command
+                std::istringstream iss(command);
+                std::vector<std::string> words{std::istream_iterator<std::string>{iss}, std::istream_iterator<std::string>{}};
+
+                //if only man then full manual or else command specific
+                if (words[0] == "MAN" && words.size() > 1) {
+                    MAN(words[1]);
+                } else {
+                    MAN(words[0]);
+                }
+                //default unknown command rakha hai
         default:
             status = system(input.c_str());
             if(status != 0)
