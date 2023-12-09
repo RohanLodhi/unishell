@@ -75,8 +75,7 @@ public:
             destFile << sourceFile.rdbuf();
             sourceFile.close();
             destFile.close();
-
-            cout << "File '" << source << "' successfully " << (isMove ? "moved" : "copied") << " to '" << destination << "'.\n";
+            
             return true;
         }
         else
@@ -94,7 +93,6 @@ public:
         ifstream file(filename);
         if (file.is_open())
         {
-            cout << "Lines containing '" << searchString << "' in file '" << filename << "':\n";
             string line;
             while (getline(file, line))
             {
@@ -111,79 +109,3 @@ public:
         }
     }
 };
-
-// Function to process user commands
-// Parameters: const string &userInput - the user's input command, FileManager &fileManager - the FileManager object
-// Return type: void
-void processCommand(const string &userInput, FileManager &fileManager)
-{
-    size_t spacePos = userInput.find(' ');
-    if (spacePos != string::npos && spacePos < userInput.size() - 1)
-    {
-        string command = userInput.substr(0, spacePos);
-        string args = userInput.substr(spacePos + 1);
-
-        if ((command == "mv" || command == "grep" || command == "cp") && args.find(' ') != string::npos)
-        {
-            size_t secondSpacePos = args.find(' ');
-            string arg1 = args.substr(0, secondSpacePos);
-            string arg2 = args.substr(secondSpacePos + 1);
-
-            if (command == "mv" || command == "cp")
-            {
-                fileManager.moveOrCopyFile(arg1, arg2, command == "mv");
-            }
-            else if (command == "grep")
-            {
-                fileManager.grepFile(arg1, arg2);
-            }
-        }
-        else if (command == "rm" || command == "cat" || command == "touch")
-        {
-            if (command == "rm")
-            {
-                fileManager.removeFile(args);
-            }
-            else if (command == "cat")
-            {
-                fileManager.catFile(args);
-            }
-            else if (command == "touch")
-            {
-                fileManager.touchFile(args);
-            }
-        }
-        else
-        {
-            cerr << "Unknown command: " << command << "\n";
-        }
-    }
-    else
-    {
-        cerr << "Invalid command. Please provide valid input.\n";
-    }
-}
-
-// Main function
-int main()
-{
-    FileManager fileManager;
-
-    while (true)
-    {
-        
-        cout << "Enter command (or 'exit' to quit): ";
-        string userInput;
-        getline(cin, userInput);
-
-        
-        if (userInput == "exit")
-        {
-            break;
-        }
-
-        processCommand(userInput, fileManager);
-    }
-
-    return 0;
-}
