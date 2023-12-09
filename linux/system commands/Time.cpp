@@ -1,6 +1,16 @@
+// Author: Prajas Naik
+// This file implements the Time class
+
 #include "Time.h"
 
-string Time::ConvertSecondsToHoursMinutesSeconds(int seconds)
+
+// public static method function: ConvertSecondsToHoursMinutesSeconds
+//      This function takes integer input of the number of seconds
+//      and converts the time to days, months, hours and seconds
+//  @param: seconds-Number of seconds
+//  @returns: A string containing the time in terms of days, hours, 
+//            minutes, seconds.
+string Time::ConvertSecondsToDaysHoursMinutesSeconds(int seconds)
 {
     int hours = seconds / 3600;
     seconds -= hours * 3600;

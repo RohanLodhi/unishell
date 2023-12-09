@@ -1,13 +1,20 @@
+// Author: Prajas Naik
+// This file implements the LinuxInfo class
+
 #include "LinuxInfo.h"
 
 using namespace std;
 
+
+// public constructor
 LinuxInfo :: LinuxInfo() : mUptime(""), mOsName(""), mKernelVersion("") 
 {
     FindKernelVersion();
     FindOsName();
 }
 
+
+//public accessor functions
 string LinuxInfo::GetKernelVersion() const
 {
     return mKernelVersion;
@@ -24,6 +31,12 @@ string LinuxInfo::GetUptime()
     return mUptime;
 }
 
+// private method function: CalculateUptime 
+//      This function fetches the information about
+//      the amount of time the system has been turned
+//      on from the appropriate directory
+//  @param: None
+//  @returns: An integer indicating whether the operation succeeded or not. 
 int LinuxInfo::CalculateUptime()
 {
     const char *path = "/proc/uptime";
@@ -34,15 +47,29 @@ int LinuxInfo::CalculateUptime()
         return EXIT_FAILURE;
     }
     string line;
-    while (getline(upTimeFile, line)) {
+    try 
+    {
+        getline(upTimeFile, line); 
         size_t token = line.find(" ");
         upTime = stoi(line.substr(0, token + 1));
-    }
-    mUptime = Time::ConvertSecondsToHoursMinutesSeconds(upTime);
+        mUptime = Time::ConvertSecondsToDaysHoursMinutesSeconds(upTime);
     
-    return EXIT_FAILURE;
+    }
+    catch (...)
+    {
+        cerr << "Could not find uptime information" << endl;
+        return EXIT_FAILURE;
+    }
+    return EXIT_SUCCESS;    
+
 }
 
+
+// private method function: FindOsName 
+//      This function fetches the information about
+//      the OS name using the uname function.
+//  @param: None
+//  @returns: An integer indicating whether the operation succeeded or not. 
 int LinuxInfo::FindOsName()
 {
     struct utsname buf;
@@ -65,6 +92,11 @@ int LinuxInfo::FindOsName()
     return EXIT_SUCCESS;
 }
 
+// private method function: FindKernelVersion 
+//      This function fetches the information about
+//      the Kernel Version using the uname function.
+//  @param: None
+//  @returns: An integer indicating whether the operation succeeded or not. 
 int LinuxInfo::FindKernelVersion()
 {
     struct utsname buf;

@@ -1,7 +1,10 @@
+// Author: Prajas Naik
+// This file implements the LinuxHardware class
+
 #include "LinuxHardware.h"
 
 using namespace std;
-
+// public constructor
 LinuxHardware :: LinuxHardware() : mCpuName(""), mMemory(""), mDisplayResolution(""), mTotalMemory(0), mUtilizedMemory(0)
 {
     FindDisplayResolution();
@@ -9,6 +12,13 @@ LinuxHardware :: LinuxHardware() : mCpuName(""), mMemory(""), mDisplayResolution
     FindGpuNames();
 }
 
+// private method function: FindGpuNames
+//      This function obtains the GPU names by using
+//      an in-built command to get all possible GPUs
+//      and then cleaning the names and storing it in the
+//      mGpuNames vector.
+//  @param: None
+//  @returns: An integer indicating whether the operation succeeded or not
 int LinuxHardware :: FindGpuNames()
 {
     string gpuCodes[2] = {"3D", "VGA"};
@@ -60,6 +70,13 @@ int LinuxHardware :: FindGpuNames()
 
 }
 
+// private method function: FindCpuName
+//      This function obtains the CPU name by 
+//      searching the appropriate file in the /proc directory
+//      and storing the information in the mCpuNames data member
+//  @param: None
+//  @returns: An integer indicating whether the operation succeeded or not
+
 int LinuxHardware :: FindCpuName()
 {
     const char *path = "/proc/cpuinfo";
@@ -79,6 +96,13 @@ int LinuxHardware :: FindCpuName()
     }
     return EXIT_FAILURE;
 }
+
+// private method function: FindAvailableMemory
+//      This function obtains the memory usageby 
+//      searching the appropriate file in the /proc directory
+//      and storing the information in the mMemory data member
+//  @param: None
+//  @returns: An integer indicating whether the operation succeeded or not
 
 int LinuxHardware::FindAvailableMemory()
 {
@@ -108,6 +132,13 @@ int LinuxHardware::FindAvailableMemory()
 
     return EXIT_SUCCESS;
 }
+
+// private method function: FindDisplayResolution
+//      This function obtains the display resolution by 
+//      searching the appropriate file in the /sys directory
+//      and storing the information in the mDisplayResolution data member
+//  @param: None
+//  @returns: An integer indicating whether the operation succeeded or not
 
 int LinuxHardware::FindDisplayResolution()
 {
