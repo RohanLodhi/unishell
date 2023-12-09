@@ -1,7 +1,11 @@
+// Author: Prajas Naik
+// This file implements the LinuxSystem class
+
 #include "LinuxSystem.h"
 
 using namespace std;
 
+// public constructor
 LinuxSystem::LinuxSystem() : mHostName(""), mUserName(""), mModel("")
 {
     mDevice = LinuxHardware();
@@ -11,6 +15,12 @@ LinuxSystem::LinuxSystem() : mHostName(""), mUserName(""), mModel("")
     FindModelName();
 }
 
+// private method function: FindHostName 
+//      This function fetches the information about
+//      the host name using the gethostname function.
+//  @param: None
+//  @returns: An integer indicating whether the operation succeeded or not. 
+
 int LinuxSystem::FindHostName()
 {
     char hostname[HOST_NAME_MAX];
@@ -19,6 +29,11 @@ int LinuxSystem::FindHostName()
     return EXIT_SUCCESS;
 }
 
+// private method function: FindUserName 
+//      This function fetches the information about
+//      the username using the getlogin_r function.
+//  @param: None
+//  @returns: An integer indicating whether the operation succeeded or not. 
 int LinuxSystem::FindUserName()
 {
     char username[LOGIN_NAME_MAX];
@@ -27,6 +42,11 @@ int LinuxSystem::FindUserName()
     return EXIT_SUCCESS;
 }
 
+// public method function: Neofetch
+//      This function prints the system information along with the ascii
+//      symbol of the Operating System used by the system
+//  @param: None
+//  @returns: An integer indicating whether the operation succeeded or not.
 int LinuxSystem::Neofetch()
 {
     cout << "              a8888b.               " << endl;
@@ -58,12 +78,21 @@ int LinuxSystem::Neofetch()
     return EXIT_SUCCESS;
 }
 
+// public method function: Neofetch
+//      This function prints the username of the current user
+//  @param: None
+//  @returns: An integer indicating whether the operation succeeded or not.
 int LinuxSystem::WhoAmI()
 {
     cout << mUserName;
     return EXIT_SUCCESS;
 }
 
+// private method function: FindModelName 
+//      This function fetches the information about
+//      the model name using the appropriate directory.
+//  @param: None
+//  @returns: An integer indicating whether the operation succeeded or not
 int LinuxSystem::FindModelName()
 {
     const string file[2] = {"product_name", "sys_vendor"};
