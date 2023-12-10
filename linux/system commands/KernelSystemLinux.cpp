@@ -5,6 +5,6 @@ using namespace std;
 int main()
 {
     LinuxSystem system = LinuxSystem();
-    system.Neofetch();
+    system.NeoFetch();
     return 0;
 }

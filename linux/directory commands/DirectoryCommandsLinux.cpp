@@ -5,10 +5,10 @@
 #include <string>
 #include <errno.h>
 #include <cstring>
-#include "Directories.cpp"
+#include "./../../Directories.cpp"
 namespace fs = std::filesystem;
 
-class DirectoryCommands : Directories {
+class DirectoryCommands : public Directories {
 public:
     bool cd(const std::string& desiredDirectory) {
         try {

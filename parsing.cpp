@@ -13,7 +13,7 @@
 
 #ifdef __linux__ 
 #include <unistd.h>
-#include "linux/system commands/LinuxSystem"
+#include "linux/system commands/LinuxSystem.cpp"
 #include "linux/network commands/networkCommandsLinux.cpp"
 #include "linux/directory commands/DirectoryCommandsLinux.cpp"
 #define OS 1
