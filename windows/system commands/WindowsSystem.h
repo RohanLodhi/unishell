@@ -13,7 +13,7 @@
 #include "WindowsInfo.h"
 #include "Hardware.h"
 #include "HelperFunctions.h"
-
+#include "System.h"
 // Libraries to include during compilation
 #pragma comment(lib, "wbemuuid.lib")
 
@@ -22,7 +22,7 @@ using namespace std;
 
 // WindowsSystem Class models the Windows System. It has both 
 // hardware and software properties relevant to the system. 
-class WindowsSystem
+class WindowsSystem : public System
 {
 private:
 
@@ -72,6 +72,6 @@ public:
 	//		command on Linux
 	//	@param: None
 	//	@returns: int value to indicate either success or failure
-	int NeoFetch();	
+	int NeoFetch();
 };
 
