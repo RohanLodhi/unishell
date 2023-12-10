@@ -1,14 +1,7 @@
 #include <iostream>
-#include <unistd.h>
 #include <filesystem>
+#include <direct.h>
 #include <string>
-#if defined(_WIN32)
-#include <direct.h>  // For windows
-#define mkdir_function _mkdir
-#else
-#include <sys/stat.h> // For linux or macOS
-#define mkdir_function mkdir
-#endif
 
 namespace fs = std::filesystem;
 
@@ -25,10 +18,9 @@ public:
     }
 
     void pwd() {
-        char tmp[256];  // Temp array to store the current working directory
-
-        // Get the current working directory
-        if (getcwd(tmp, sizeof(tmp)) != nullptr) {
+        // Windows implementation uses _getcwd
+        char tmp[256];
+        if (_getcwd(tmp, sizeof(tmp)) != nullptr) {
             std::cout << "Current working directory: " << tmp << std::endl;
         } else {
             std::cerr << "Error getting current working directory." << std::endl;
@@ -36,14 +28,9 @@ public:
     }
 
     void mkdir(const std::string& directory_name) {
-        // Check if the path is incomplete (relative) or complete (absolute)
-        std::filesystem::path full_path = (fs::path(directory_name).is_absolute()) ? directory_name : currentPath() / directory_name;
-
-        // Attempt to create the directory
-        try {
-            fs::create_directory(full_path);
-        } catch (const std::filesystem::filesystem_error& e) {
-            std::cerr << "Error creating directory: " << e.what() << std::endl;
+        // Windows-specific mkdir with _mkdir
+        if (_mkdir(directory_name.c_str()) != 0) {
+            std::cerr << "Error creating directory: " << strerror(errno) << std::endl;
         }
     }
 
