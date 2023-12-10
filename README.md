@@ -22,7 +22,7 @@ If a command is not directly supported, the `system()` function is used to execu
 
 ## Instructions for Building and Running:
 
-Follow these steps to build and run the Unishell program:
+An executable is available for direct uplaod, however, if you wish ypu can build the program yourself. Follow these steps to build and run the Unishell program:
 
 1. **Clone the Repository:**
    ```bash

@@ -18,7 +18,6 @@ if(WIN32)
     windows/network\ commands/networkCommandsWindows.cpp
     windows/system\ commands/Hardware.cpp
     windows/system\ commands/HelperFunctions.cpp
-    windows/system\ commands/KernalSystemOperations.cpp
     windows/system\ commands/Time.cpp
     windows/system\ commands/WindowsInfo.cpp
     windows/system\ commands/WindowsSystem.cpp)
@@ -26,7 +25,6 @@ else()
     # Linux-specific source files
     list(APPEND SOURCES linux/directory\ commands/DirectoryCommandsLinux.cpp
     linux/network\ commands/networkCommandsLinux.cpp
-    linux/system\ commands/KernelSystemLinux.cpp
     linux/system\ commands/LinuxHardware.cpp
     linux/system\ commands/LinuxInfo.cpp
     linux/system\ commands/LinuxSystem.cpp
