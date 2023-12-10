@@ -4,19 +4,25 @@
 #include <sstream>
 
 #ifdef _WIN32
-    #include <direct.h> // windows specific
-    #include "windows/system commands/WindowsSystem.h" //windows specific
-    #include "windows/network commands/networkCommandsWindows.cpp" // windows specific
+#include <direct.h> // windows specific
+#include "windows/system commands/WindowsSystem.h" //windows specific
+#include "windows/network commands/networkCommandsWindows.cpp" // windows specific
+#include "windows/directory commands/DirectoryCommandsWindows.cpp"
+#define OS 0
 #endif // _WIN32
 
 #ifdef __linux__ 
-//Add linux specific header files
+#include <unistd.h>
+#include "linux/system commands/LinuxSystem"
+#include "linux/network commands/networkCommandsLinux.cpp"
+#include "linux/directory commands/DirectoryCommandsLinux.cpp"
+#define OS 1
 #endif // __linux__ 
 
 
 #include "fileCommands.cpp"
 #include "echo.cpp"
-#include "DirectoryCommands.cpp"
+
 using namespace std;
 
 enum Command {
@@ -75,27 +81,33 @@ vector<string> parseInput(const string& input) {
 
 
 int main() {
-    //home directory of linux needs to be put
-    char cwd[1024];
-    string path = "/";
-    if (_getcwd(cwd, sizeof(cwd)) != NULL)
-        path = cwd;
-    // WindowsSystem windowsSystem = WindowsSystem();
-    // NetworkCommands network = NetworkCommands();
+    System* pSystemObject = nullptr;
+    Network* pNetworkObject = nullptr;
+    Directories* pDirectoriesObject = nullptr;
+#ifdef _WIN32
+    pSystemObject = new WindowsSystem();
+    pNetworkObject = new NetworkCommands();
+    pDirectoriesObject = new DirectoryCommands();
+#endif
+#ifdef __linux__
+    pSystemObject = new LinuxSystem();
+    pNetworkObject = new NetworkCommands();
+    pDirectoriesObject = new DirectoryCommands();
+#endif
     FileManager manager = FileManager();
     EchoCommand echohandler = EchoCommand();
-    DirectoryCommands directories = DirectoryCommands();
+    string path = pDirectoriesObject->getPath();
 
     int status = 0;
     while (true) {
-        cout << "Path: " << path << endl;
+        cout << path << ">> ";
         string input;
         getline(cin, input);
         vector<string> tokens = parseInput(input);
-        
+
         switch (hashit(tokens[0])) {
         case MKDIR:
-            directories.mkdir(tokens[1]);
+            pDirectoriesObject->mkdir(tokens[1]);
             break;
         case CAT:
             if (tokens.size() == 2)
@@ -104,7 +116,7 @@ int main() {
             }
             else
             {
-                cerr << "Wrong command" << endl;
+                cerr << "Incorrect number of arguments for cat. Expected 1." << endl;
             }
 
             // cat
@@ -116,7 +128,7 @@ int main() {
             }
             else
             {
-                cerr << "Wrong command" << endl;
+                cerr << "Incorrect number of arguments for rm. Expected 1." << endl;
             }
 
             // rm
@@ -128,7 +140,7 @@ int main() {
             }
             else
             {
-                cerr << "Wrong command" << endl;
+                cerr << "Incorrect number of arguments for cp. Expected 2." << endl;
             }
 
             // cp
@@ -136,11 +148,11 @@ int main() {
         case MV:
             if (tokens.size() == 3)
             {
-                manager.moveOrCopyFile(tokens[1], tokens[2], false);
+                manager.moveOrCopyFile(tokens[1], tokens[2], true);
             }
             else
             {
-                cerr << "Wrong command" << endl;
+                cerr << "Incorrect number of arguments for mv. Expected 2." << endl;
             }
             // mv
             break;
@@ -151,7 +163,7 @@ int main() {
             }
             else
             {
-                cerr << "Wrong command" << endl;
+                cerr << "Incorrect number of arguments for grep. Expected 2." << endl;
             }
 
             // grep
@@ -163,46 +175,48 @@ int main() {
             }
             else
             {
-                cerr << "Wrong command" << endl;
+                cerr << "Incorrect number of arguments for grep. Expected 1." << endl;
             }
 
             // touch
             break;
         case RMDIR:
-            directories.rmdir(tokens[1]);
+            pDirectoriesObject->rmdir(tokens[1]);
+            path = pDirectoriesObject->getPath();
             break;
         case LS:
             if (tokens.size() == 1) {
-                directories.ls();
+                pDirectoriesObject->ls();
             }
             else {
-                directories.ls(tokens[1]);
+                pDirectoriesObject->ls(tokens[1]);
             }
             break;
         case CD:
-            directories.cd(tokens[1]);
+            pDirectoriesObject->cd(tokens[1]);
+            path = pDirectoriesObject->getPath();
             break;
         case PWD:
-            directories.pwd();
+            pDirectoriesObject->pwd();
             break;
         case NEOFETCH:
-            windowsSystem.NeoFetch();
+            pSystemObject->NeoFetch();
             // neofetch
             break;
         case WHOAMI:
-            windowsSystem.WhoAmI();
+            pSystemObject->WhoAmI();
             // whoami
             break;
         case IFCONFIG:
-            network.ifconfigCommand();
+            pNetworkObject->ifconfigCommand();
             // ifconfig
             break;
         case ECHO:
-            echohandler.execute(input.substr(5));
+            echohandler.execute(tokens);
             break;
         default:
             status = system(input.c_str());
-            if(status != 0)
+            if (status != 0)
                 cout << "Unknown command" << endl;
             break;
         }
