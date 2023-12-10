@@ -80,8 +80,8 @@ int main() {
     string path = "/";
     if (_getcwd(cwd, sizeof(cwd)) != NULL)
         path = cwd;
-    WindowsSystem windowsSystem = WindowsSystem();
-    NetworkCommands network = NetworkCommands();
+    // WindowsSystem windowsSystem = WindowsSystem();
+    // NetworkCommands network = NetworkCommands();
     FileManager manager = FileManager();
     EchoCommand echohandler = EchoCommand();
     DirectoryCommands directories = DirectoryCommands();
@@ -98,27 +98,74 @@ int main() {
             directories.mkdir(tokens[1]);
             break;
         case CAT:
-            manager.catFile(tokens[1]);
+            if (tokens.size() == 2)
+            {
+                manager.catFile(tokens[1]);
+            }
+            else
+            {
+                cerr << "Wrong command" << endl;
+            }
+
             // cat
             break;
         case RM:
-            manager.removeFile(tokens[1]);
+            if (tokens.size() == 2)
+            {
+                manager.removeFile(tokens[1]);
+            }
+            else
+            {
+                cerr << "Wrong command" << endl;
+            }
+
             // rm
             break;
         case CP:
-            manager.moveOrCopyFile(tokens[1], tokens[2], false);
+            if (tokens.size() == 3)
+            {
+                manager.moveOrCopyFile(tokens[1], tokens[2], false);
+            }
+            else
+            {
+                cerr << "Wrong command" << endl;
+            }
+
             // cp
             break;
         case MV:
-            manager.moveOrCopyFile(tokens[1], tokens[2], true);
+            if (tokens.size() == 3)
+            {
+                manager.moveOrCopyFile(tokens[1], tokens[2], false);
+            }
+            else
+            {
+                cerr << "Wrong command" << endl;
+            }
             // mv
             break;
         case GREP:
-            manager.grepFile(tokens[1], tokens[2]);
+            if (tokens.size() == 3)
+            {
+                manager.grepFile(tokens[1], tokens[2]);
+            }
+            else
+            {
+                cerr << "Wrong command" << endl;
+            }
+
             // grep
             break;
         case TOUCH:
-            manager.touchFile(tokens[1]);
+            if (tokens.size() == 2)
+            {
+                manager.touchFile(tokens[1]);
+            }
+            else
+            {
+                cerr << "Wrong command" << endl;
+            }
+
             // touch
             break;
         case RMDIR:
