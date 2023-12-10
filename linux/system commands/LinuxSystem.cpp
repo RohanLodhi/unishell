@@ -47,7 +47,7 @@ int LinuxSystem::FindUserName()
 //      symbol of the Operating System used by the system
 //  @param: None
 //  @returns: An integer indicating whether the operation succeeded or not.
-int LinuxSystem::Neofetch()
+int LinuxSystem::NeoFetch()
 {
     cout << "              a8888b.               " << endl;
     cout << "             d888888b.              " << endl;

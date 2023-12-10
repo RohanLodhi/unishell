@@ -10,7 +10,7 @@
 
 // User-defined header files
 #include "LinuxHardware.h"
-#include "System.h"
+#include "./../../System.h"
 #include "LinuxInfo.h"
 
 using namespace std;
@@ -61,7 +61,7 @@ class LinuxSystem : public System
         //      symbol of the Operating System used by the system
         //  @param: None
         //  @returns: An integer indicating whether the operation succeeded or not.
-        int Neofetch();
+        int NeoFetch();
 
         // public method function: Neofetch
         //      This function prints the username of the current user
