@@ -1,70 +1,78 @@
 // Author: Prajas Naik
-// This file contains the declaration of the LinuxSystem class
+// This file contains the WindowsSystem class as descibed below
 
 #pragma once
 
 // Built-in header files
-#include <iostream>
-#include <unistd.h>
-#include <limits.h>
+#include <string>
+#include <vector>
+#include <lmcons.h>
+#include <Windows.h>
 
-// User-defined header files
-#include "LinuxHardware.h"
-#include "LinuxInfo.h"
+// Unibash header files
+#include "WindowsInfo.h"
+#include "Hardware.h"
+#include "HelperFunctions.h"
+#include "System.h"
+
+// Libraries to include during compilation
+#pragma comment(lib, "wbemuuid.lib")
 
 using namespace std;
 
-// The Linux System Class models the device that the program is 
-// running on, including the OS, the Hardware, and the system 
-// information
-class LinuxSystem
+
+// WindowsSystem Class models the Windows System. It has both 
+// hardware and software properties relevant to the system. 
+class WindowsSystem : public System
 {
-    private:  
-        // User-defined private data members  
-        LinuxHardware mDevice;
-        LinuxInfo mLinux;
+private:
 
-        // Built in private data members
-        string mUserName;
-        string mHostName;   
-        string mModel;
-        const string mShell = "unibash 1.0";
+	//Built-in types
+	string mUserName;
+	string mHostName;
+	string mComputerModel;
+	const string mShellName = "unibash 1.0";
 
-        // private method function: FindModelName 
-        //      This function fetches the information about
-        //      the model name using the appropriate directory.
-        //  @param: None
-        //  @returns: An integer indicating whether the operation succeeded or not. 
-        int FindModelName();
+	//User-defined types
+	Hardware mDevice;
+	WindowsInfo mWindows;
 
-        // private method function: FindUserName 
-        //      This function fetches the information about
-        //      the username using the getlogin_r function.
-        //  @param: None
-        //  @returns: An integer indicating whether the operation succeeded or not. 
-        int FindUserName();
+	//private method function: FindHostName
+	//		Uses the WinAPI FindHostName function to obtain the system host name
+	//	@param: None
+	//	@returns: int value to indicate either success or failure
+	int FindHostName();
 
-        // private method function: FindHostName 
-        //      This function fetches the information about
-        //      the host name using the gethostname function.
-        //  @param: None
-        //  @returns: An integer indicating whether the operation succeeded or not. 
-        int FindHostName();
-    public:
 
-        // public constructor
-        LinuxSystem();
+	//private method function: FindUserName
+	//		Uses the WinAPI GetUserNameA function to obtain the username
+	//	@param: None
+	//	@returns: int value to indicate either success or failure
+	int FindUsername();
 
-        // public method function: Neofetch
-        //      This function prints the system information along with the ascii
-        //      symbol of the Operating System used by the system
-        //  @param: None
-        //  @returns: An integer indicating whether the operation succeeded or not.
-        int Neofetch();
+	// private method function: GetComputerModel
+	//		It queries WMI using WQL to obtain Computer Model and
+	//		stores it in the private data member mComputerModel
+	//	@param: None
+	//	@returns: int value to indicate either success or failure
+	int FindComputerModel();
 
-        // public method function: Neofetch
-        //      This function prints the username of the current user
-        //  @param: None
-        //  @returns: An integer indicating whether the operation succeeded or not.
-        int WhoAmI();
+public:
+	//Constructor for Windows System class
+	WindowsSystem();
+
+	//public method function: WhoAmI
+	//		Uses WinAPI to obtain the username of the current user
+	//	@param: None
+	//	@returns: int value to indicate either success or failure
+	int WhoAmI();
+
+	//public method function: NeoFetch
+	//		Displays System Information, such as CPU Name, GPU Name, 
+	//		Resolution, etc. Similar functionality to neofetch 
+	//		command on Linux
+	//	@param: None
+	//	@returns: int value to indicate either success or failure
+	int NeoFetch();	
 };
+
