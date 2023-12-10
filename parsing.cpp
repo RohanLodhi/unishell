@@ -16,7 +16,7 @@
 
 #include "fileCommands.cpp"
 #include "echo.cpp"
-
+#include "DirectoryCommands.cpp"
 using namespace std;
 
 enum Command {
@@ -83,6 +83,9 @@ int main() {
     WindowsSystem windowsSystem = WindowsSystem();
     NetworkCommands network = NetworkCommands();
     FileManager manager = FileManager();
+    EchoCommand echohandler = EchoCommand();
+    DirectoryCommands directories = DirectoryCommands();
+
     int status = 0;
     while (true) {
         cout << "Path: " << path << endl;
@@ -92,8 +95,7 @@ int main() {
         
         switch (hashit(tokens[0])) {
         case MKDIR:
-            cout << "mkdir command" << endl;
-            // mkdir
+            directories.mkdir(tokens[1]);
             break;
         case CAT:
             manager.catFile(tokens[1]);
@@ -120,20 +122,21 @@ int main() {
             // touch
             break;
         case RMDIR:
-            cout << "rmdir command" << endl;
-            // rmdir
+            directories.rmdir(tokens[1]);
             break;
         case LS:
-            cout << "ls command" << endl;
-            // ls
+            if (tokens.size() == 1) {
+                directories.ls();
+            }
+            else {
+                directories.ls(tokens[1]);
+            }
             break;
         case CD:
-            cout << "cd command" << endl;
-            // cd
+            directories.cd(tokens[1]);
             break;
         case PWD:
-            cout << "pwd command" << endl;
-            // pwd
+            directories.pwd();
             break;
         case NEOFETCH:
             windowsSystem.NeoFetch();
@@ -148,10 +151,8 @@ int main() {
             // ifconfig
             break;
         case ECHO:
-            EchoCommand command = EchoCommand();
-            command.execute(tokens);
+            echohandler.execute(input.substr(5));
             break;
-            //default unknown command rakha hai
         default:
             status = system(input.c_str());
             if(status != 0)
