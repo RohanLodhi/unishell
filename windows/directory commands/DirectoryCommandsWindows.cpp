@@ -2,17 +2,23 @@
 #include <filesystem>
 #include <direct.h>
 #include <string>
+#include <errno.h>
+#include <cstring>
+
+#include "Directories.cpp"
 
 namespace fs = std::filesystem;
 
-class DirectoryCommands {
+class DirectoryCommands : public Directories
+{
 public:
-    bool cd(const std::string& desiredDirectory) {
+        bool cd(const std::string& desiredDirectory) {
         try {
             // Attempt to change the current directory
             fs::current_path(desiredDirectory);
             return true;  // Directory change successful
-        } catch (const std::exception& e) {
+        }
+        catch (const std::exception& e) {
             return false;  // Directory change unsuccessful
         }
     }
@@ -22,7 +28,8 @@ public:
         char tmp[256];
         if (_getcwd(tmp, sizeof(tmp)) != nullptr) {
             std::cout << "Current working directory: " << tmp << std::endl;
-        } else {
+        }
+        else {
             std::cerr << "Error getting current working directory." << std::endl;
         }
     }
@@ -30,7 +37,9 @@ public:
     void mkdir(const std::string& directory_name) {
         // Windows-specific mkdir with _mkdir
         if (_mkdir(directory_name.c_str()) != 0) {
-            std::cerr << "Error creating directory: " << strerror(errno) << std::endl;
+            char buffer[256];
+            strerror_s(buffer, sizeof(buffer), errno);
+            std::cerr << "Error creating directory: " << buffer << '\n';
         }
     }
 
@@ -44,10 +53,12 @@ public:
             if (directoryExists(directoryPath)) {
                 fs::remove_all(directoryPath);
                 std::cout << "Directory removed successfully." << std::endl;
-            } else {
+            }
+            else {
                 std::cerr << "Error: Directory does not exist." << std::endl;
             }
-        } catch (const fs::filesystem_error& e) {
+        }
+        catch (const fs::filesystem_error& e) {
             std::cerr << "Error removing directory: " << e.what() << std::endl;
         }
     }
@@ -57,11 +68,16 @@ public:
             for (const auto& entry : fs::directory_iterator(path)) {
                 std::cout << entry.path().filename() << std::endl;
             }
-        } catch (const fs::filesystem_error& e) {
+        }
+        catch (const fs::filesystem_error& e) {
             std::cerr << "Error listing directory: " << e.what() << std::endl;
         }
     }
-
+    std::string getPath()
+    {
+        auto path = currentPath();
+        return path.string();
+    }
 private:
     std::filesystem::path currentPath() {
         return std::filesystem::current_path();
