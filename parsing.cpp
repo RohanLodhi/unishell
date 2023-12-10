@@ -6,7 +6,7 @@
 #ifdef _WIN32
     #include <direct.h> // windows specific
     #include "windows/system commands/WindowsSystem.h" //windows specific
-    #include "networkCommandsWindows.cpp" // windows specific
+    #include "windows/network commands/networkCommandsWindows.cpp" // windows specific
 #endif // _WIN32
 
 #ifdef __linux__ 
