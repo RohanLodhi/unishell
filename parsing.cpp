@@ -212,7 +212,7 @@ int main() {
             // ifconfig
             break;
         case ECHO:
-            echohandler.execute(tokens);
+            echohandler.execute(input);
             break;
         default:
             status = system(input.c_str());
