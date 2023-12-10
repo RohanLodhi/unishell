@@ -2,9 +2,11 @@
 #include <windows.h>
 #include <iphlpapi.h>
 
+#include "Network.h"
+
 #pragma comment(lib, "IPHLPAPI.lib")
 
-class NetworkCommands {
+class NetworkCommands : public Network {
 public:
     void ifconfigCommand() {
         PIP_ADAPTER_INFO adapterInfo = new IP_ADAPTER_INFO();
@@ -26,7 +28,8 @@ public:
 
                 adapter = adapter->Next;
             }
-        } else {
+        }
+        else {
             std::cerr << "Error getting adapter information." << std::endl;
         }
 
@@ -37,10 +40,10 @@ public:
 private:
     // Add any additional private member functions or variables here if needed.
 };
-
-int main() {
-    NetworkCommands networkCommands;
-    networkCommands.ifconfigCommand();
-
-    return 0;
-}
+//
+//int main() {
+//    NetworkCommands networkCommands;
+//    networkCommands.ifconfigCommand();
+//
+//    return 0;
+//}
