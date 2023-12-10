@@ -3,6 +3,8 @@
 #include <unistd.h> // For getcwd on Linux
 #include <sys/stat.h> // For mkdir on Linux
 #include <string>
+#include <errno.h>
+#include <cstring>
 #include "Directories.cpp"
 namespace fs = std::filesystem;
 
