@@ -26,7 +26,7 @@ An executable is available for direct uplaod, however, if you wish ypu can build
 
 1. **Clone the Repository:**
    ```bash
-   git clone https://github.com/your_username/unishell.git
+   git clone https://github.com/rohanlodhi/unishell.git
    cd unishell
 2. **Create a Build Directory:**
     ```
