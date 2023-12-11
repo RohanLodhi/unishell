@@ -55,7 +55,6 @@ Windows Files:
     System Commands:
         windows/system commands/Hardware.cpp
         windows/system commands/HelperFunctions.cpp
-        windows/system commands/KernalSystemOperations.cpp
         windows/system commands/Time.cpp
         windows/system commands/WindowsInfo.cpp
         windows/system commands/WindowsSystem.cpp
@@ -65,7 +64,6 @@ Linux Files:
     Directory Commands: linux/directory commands/DirectoryCommandsLinux.cpp
     Network Commands: linux/network commands/networkCommandsLinux.cpp
     System Commands:
-        linux/system commands/KernelSystemLinux.cpp
         linux/system commands/LinuxHardware.cpp
         linux/system commands/LinuxInfo.cpp
         linux/system commands/LinuxSystem.cpp
