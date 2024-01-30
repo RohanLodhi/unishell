@@ -197,14 +197,15 @@ int WindowsInfo::FindOsInformation()
 
         VariantInit(&vtProp);
 
-        // Get the value of the Name property of Win32_OperatingSystem
+        // Get the value of the Version property of Win32_OperatingSystem
         hr = pclsObj->Get(L"Version", 0, &vtProp, 0, 0);
         mKernelVersion = HelperFunctions::ConvertBstrToString(vtProp.bstrVal);
 
+	// Get the value of the LastBootupTime property of Win32_OperatingSystem
         hr = pclsObj->Get(L"LastBootUpTime", 0, &vtProp, 0, 0);
         mLastBootUpTime = HelperFunctions::ConvertBstrToString(vtProp.bstrVal);
 
-        //Get the value of the Version Property of Win32_OperatingSystem
+        // Get the value of the Name Property of Win32_OperatingSystem
         hr = pclsObj->Get(L"Name", 0, &vtProp, 0, 0);
         mOsName = HelperFunctions::ConvertBstrToString(vtProp.bstrVal);
         CleanOsName();
