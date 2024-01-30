@@ -266,10 +266,39 @@ int WindowsSystem::NeoFetch()
     cout << "                                    " <<"Shell: " << mShellName << endl;
     cout << "EEEEEEEEEEEEEEE  EEEEEEEEEEEEEEE    " << "Resolution: " << mDevice.GetResolution() << endl;
     cout << "EEEEEEEEEEEEEEE  EEEEEEEEEEEEEEE    " <<"CPU: " << mDevice.GetCpuName() << endl;
+    int count = 0;
     for (auto x : mDevice.GetGpuNames())
-        cout << "EEEEEEEEEEEEEEE  EEEEEEEEEEEEEEE    " <<"GPU: " << x << endl;
-    cout << "EEEEEEEEEEEEEEE  EEEEEEEEEEEEEEE    " <<"Memory: " << mDevice.GetMemoryUsage() << endl;
-    cout << "EEEEEEEEEEEEEEE  EEEEEEEEEEEEEEE    " << endl;
+    {
+        count++;
+        if (count < 5)
+            cout << "EEEEEEEEEEEEEEE  EEEEEEEEEEEEEEE    " <<"GPU: " << x << endl;
+        else cout << "                                    " << "GPU: " << x << endl;
+    }
+    if (count == 0)
+    {
+        cout << "EEEEEEEEEEEEEEE  EEEEEEEEEEEEEEE    " <<"Memory: " << mDevice.GetMemoryUsage() << endl;
+        cout << "EEEEEEEEEEEEEEE  EEEEEEEEEEEEEEE    " << endl;
+        cout << "EEEEEEEEEEEEEEE  EEEEEEEEEEEEEEE    " << endl;
+        cout << "EEEEEEEEEEEEEEE  EEEEEEEEEEEEEEE    " << endl;
+    }
+    else if (count == 1) 
+    {
+        cout << "EEEEEEEEEEEEEEE  EEEEEEEEEEEEEEE    " <<"Memory: " << mDevice.GetMemoryUsage() << endl;
+        cout << "EEEEEEEEEEEEEEE  EEEEEEEEEEEEEEE    " << endl;
+        cout << "EEEEEEEEEEEEEEE  EEEEEEEEEEEEEEE    " << endl;
+    }
+    else if (count == 2)
+    {
+        cout << "EEEEEEEEEEEEEEE  EEEEEEEEEEEEEEE    " <<"Memory: " << mDevice.GetMemoryUsage() << endl;
+        cout << "EEEEEEEEEEEEEEE  EEEEEEEEEEEEEEE    " << endl;
+    }
+    else if (count == 3)
+    {
+        cout << "EEEEEEEEEEEEEEE  EEEEEEEEEEEEEEE    " <<"Memory: " << mDevice.GetMemoryUsage() << endl;
+    }
+    else
+        cout << "                                    " <<"Memory: " << mDevice.GetMemoryUsage() << endl;
+    
     return 0;
 }
 
