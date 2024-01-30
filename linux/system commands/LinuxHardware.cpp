@@ -25,7 +25,7 @@ int LinuxHardware :: FindGpuNames()
 
     for (int i = 0; i < gpuCodes->size(); i ++)
     {
-        // Command to execute (replace 'your_pattern' and 'your_file' with actual values)
+        // Command to execute 
         const string command = ("lspci -v | grep " + gpuCodes[i]);
 
         // Open a pipe to the command
@@ -52,14 +52,11 @@ int LinuxHardware :: FindGpuNames()
             return EXIT_FAILURE;
         }
 
-        // Print or process the captured output
-        //cout << "Output of grep command:\n" << result;
 
         size_t start = result.find(": ") + 2;
         size_t end = result.find(" (rev");
 
         if (start != string :: npos && end != string :: npos) {
-            //cout << result.substr(start, end - start);
             mGpuNames.push_back(result.substr(start, end - start));
         } else {
             cout << "\nError: Unable to extract GPU name.";
